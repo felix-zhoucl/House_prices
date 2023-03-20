@@ -14,7 +14,7 @@ from tornado.options import define, options
 # 定义端口用于指定HTTP服务监听的端口
 # 如果命令行中带有port同名参数则会称为全局tornado.options的属性，若没有则使用define定义。
 define("port", type=int, default=8000, help="run on the given port")
-logging.info("server started on port：%s", 8000)
+
 
 
 # 创建请求处理器
@@ -38,6 +38,7 @@ def main():
     tornado.options.parse_command_line()
     # 创建应用实例
     app = tornado.web.Application(urls)
+    logging.info("server started on port：%s", 8000)
     # 监听端口
     app.listen(options.port)
     # 创建IOLoop实例并启动
