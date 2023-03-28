@@ -31,7 +31,7 @@ def get_config(key):
         logging.error(traceback.format_exc())
 
 
-def connect_db():
+def db():
     """
     链接数据库
     :return:
@@ -49,7 +49,7 @@ def connect_db():
         database=get_config("__db_name__"),
         charset='utf8'
     )
-    return pool
+    return pool.connection()
 
 
 def print_log(logFilename):
