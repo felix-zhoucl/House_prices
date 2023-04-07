@@ -11,7 +11,32 @@ def zip_code(code):
     :return:
     """
     code = code.replace("\n", "").replace(" ", "").replace("\t", "")
-    ret = f"\"change\"=\"{code}\""
+    ret = f"\"change\":=\"{code}\""
+    return ret
+
+
+def unzip_code(code):
+    """
+    还原js代码
+    :param code:
+    :return:
+    """
+    if "change" in code:
+        code = code.replace("\"change\":=", "").replace("\"", "")
+
+    indent = 0
+    formatted = []
+    for char in code:
+        formatted.append(char)
+        if char == '{':  # { 是缩进的依据
+            indent += 1
+            formatted.append("\n")
+            formatted.append("\t" * indent)
+        if char == "}":
+            indent -= 1
+            formatted.append("\n")
+            formatted.append("\t" * indent)
+    ret = "\t" * indent + "".join(formatted)
     return ret
 
 
@@ -36,3 +61,5 @@ if __name__ == '__main__':
     """
     zipped_code = zip_code(code)
     print(zipped_code)
+    unz = unzip_code(zipped_code)
+    print(unz)
