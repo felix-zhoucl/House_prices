@@ -47,10 +47,9 @@ workbook.close()  # 关闭excel文件
 
 def DYNAMIC_FILL_COLOR(self, plugin_name, *args):
     """
-    单元格背景颜色填充
     1深红 2红色 3橙色 4黄色 5浅绿 6绿色 7浅蓝 8蓝色 9深蓝 10紫色
-    :param plugin_name: 云函数名称
-    :param args: 云函数参数
+    :param plugin_name
+    :param args:
     :return: {'num': 1, 'value': 12}  or {'color': '7030A0', 'value': '值'}  color 为色值
     """
     # 1深红 2红色 3橙色 4黄色 5浅绿 6绿色 7浅蓝 8蓝色 9深蓝 10紫色
