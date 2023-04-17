@@ -22,7 +22,6 @@ def get_session():
     }
     response_ = session_.post(login_url, data=payload)
     result_ = json.loads(response_.text)
-    print(result_)
     return session_
 
 
