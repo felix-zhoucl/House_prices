@@ -8,7 +8,12 @@ from environment import db
 if __name__ == '__main__':
     conn = db()
     cursor = conn.cursor()
-    cursor.execute('select * from user')
+    # Unicode编码中文字符串：
+    # reg="^[u4e00-u9fa5]$"
+    reg = "[、-兼]"
+    sql = "SELECT name FROM user WHERE name regexp '{}'".format(reg)
+    print(sql)
+    cursor.execute(sql)
     result = cursor.fetchall()
     print(result)
     cursor.close()
