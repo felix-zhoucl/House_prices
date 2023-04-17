@@ -16,5 +16,8 @@ if __name__ == '__main__':
     cursor.execute(sql)
     result = cursor.fetchall()
     print(result)
+    insert_sql="INSERT INTO `mypf` (`receiver_address`, `receiver_mobile`, `receiver_name`, `receiver_telno`, `id`) VALUES ('1', '2', '3', '4', NULL);"
+    cursor.execute(insert_sql)
+    conn.commit()
     cursor.close()
     conn.close()
