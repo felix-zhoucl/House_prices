@@ -3,22 +3,30 @@
 # @Create_time:2023/4/17 19:15
 # @File_name:Ekb
 import json
+import traceback
 
 import requests
 
 from environment import db
 
 SID = "renzhi"
-USERNAME = "15014125325"
-PASSWORD = "Aa123456789"
+# USERNAME = "15014125325"
+# PASSWORD = "Aa123456789"
+# password = "3d558122fcac9ea5fdc9ee8eccf8f433"
+USERNAME = "admin"
+PASSWORD = "Qwe12345678"
+password = "89a4b59d1f657c9da72d94f797a55edf"
 
 
 def get_session():
     """获取登录session"""
     login_url = "https://erp.ekbyun.com/index.php/home/login/access.html"
     session_ = requests.Session()
+    # payload = {
+    #     'data': '{"sid":"renzhi","username":"15014125325","password":"3d558122fcac9ea5fdc9ee8eccf8f433"}'
+    # }
     payload = {
-        'data': '{"sid":"renzhi","username":"15014125325","password":"3d558122fcac9ea5fdc9ee8eccf8f433"}'
+        'data': '{"sid":"renzhi","username":"admin","password":"89a4b59d1f657c9da72d94f797a55edf"}'
     }
     response_ = session_.post(login_url, data=payload)
     result_ = json.loads(response_.text)
@@ -68,6 +76,7 @@ def get_data(session_, p_id):
     if success == "success":
         return ret.get("success_response", {}).get("data")
     else:
+        print(ret)
         return {}
 
 
@@ -75,22 +84,29 @@ if __name__ == '__main__':
     print("fetch_begin")
     session = get_session()
     print("get_session")
-    list_data = get_list_data(session, 1, 100)
+    list_data = get_list_data(session, 4, 50)
     ids = [x.get("id") for x in list_data]
     print("get_list")
     conn = db()
     cursor = conn.cursor()
     print("conn_db")
-    for id_ in ids:
-        result = get_data(session, id_)
-        if result:
-            insert_sql = "INSERT INTO `mypf` (`receiver_address`, `receiver_mobile`, `receiver_name`, `receiver_telno`, `id`) " \
-                         "VALUES ('{}', '{}', '{}', '{}', NULL);".format(result.get("receiver_address"),
-                                                                         result.get("receiver_mobile"),
-                                                                         result.get("receiver_name"),
-                                                                         result.get("receiver_telno"))
-            cursor.execute(insert_sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
-    print("success!!")
+    try:
+        count = 0
+        for id_ in ids:
+            count += 1
+            print("get:{}/50".format(count))
+            result = get_data(session, id_)
+            if result:
+                insert_sql = "INSERT INTO `mypf` (`receiver_address`, `receiver_mobile`, `receiver_name`, `receiver_telno`, `id`) " \
+                             "VALUES ('{}', '{}', '{}', '{}', NULL);".format(result.get("receiver_address"),
+                                                                             result.get("receiver_mobile"),
+                                                                             result.get("receiver_name"),
+                                                                             result.get("receiver_telno"))
+                cursor.execute(insert_sql)
+    except Exception as e:
+        print(traceback.format_exc())
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print("success!!")
