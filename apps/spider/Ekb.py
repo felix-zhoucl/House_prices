@@ -9,10 +9,11 @@ import requests
 
 from environment import db
 
-SID = "renzhi"
+# SID = "renzhi"
 # USERNAME = "15014125325"
 # PASSWORD = "Aa123456789"
 # password = "3d558122fcac9ea5fdc9ee8eccf8f433"
+SID = "renzhi"
 USERNAME = "admin"
 PASSWORD = "Qwe12345678"
 password = "89a4b59d1f657c9da72d94f797a55edf"
@@ -51,8 +52,26 @@ def get_list_data(session_, index_, page_size):
         'search[shop_id]': '1'
     }
     response = session_.post(url, data=payload)
+    # print(response.text)
     ret = json.loads(response.text)
     return ret.get("rows")
+
+
+def check_verify_code(data_id):
+    """
+    识别验证码
+    :return:
+    """
+    import ddddocr
+    ocr = ddddocr.DdddOcr()
+    # TODO:
+    # 1获取验证码图片
+    # 2保存本地
+    with open('./verify_code/{}.png'.format(data_id), 'rb') as f:
+        img_bytes = f.read()
+    res = ocr.classification(img_bytes)
+    print("识别验证码结果：{}".format(res))
+    return res
 
 
 def get_data(session_, p_id):
@@ -78,13 +97,19 @@ def get_data(session_, p_id):
     else:
         print(ret)
         return {}
+        check_verify_code(data_id=p_id)
+        ret = get_data(session_, p_id)
+        if ret:
+            return ret
+        else:
+            return {}
 
 
 if __name__ == '__main__':
     print("fetch_begin")
     session = get_session()
     print("get_session")
-    list_data = get_list_data(session, 4, 50)
+    list_data = get_list_data(session, 5, 50)
     ids = [x.get("id") for x in list_data]
     print("get_list")
     conn = db()
@@ -97,11 +122,12 @@ if __name__ == '__main__':
             print("get:{}/50".format(count))
             result = get_data(session, id_)
             if result:
-                insert_sql = "INSERT INTO `mypf` (`receiver_address`, `receiver_mobile`, `receiver_name`, `receiver_telno`, `id`) " \
-                             "VALUES ('{}', '{}', '{}', '{}', NULL);".format(result.get("receiver_address"),
-                                                                             result.get("receiver_mobile"),
-                                                                             result.get("receiver_name"),
-                                                                             result.get("receiver_telno"))
+                insert_sql = "INSERT INTO `mypf` (`receiver_address`, `receiver_mobile`, `receiver_name`, `receiver_telno`, `id`,`data_id`) " \
+                             "VALUES ('{}', '{}', '{}', '{}', NULL,'{}');".format(result.get("receiver_address"),
+                                                                                  result.get("receiver_mobile"),
+                                                                                  result.get("receiver_name"),
+                                                                                  result.get("receiver_telno"),
+                                                                                  id_)
                 cursor.execute(insert_sql)
     except Exception as e:
         print(traceback.format_exc())
