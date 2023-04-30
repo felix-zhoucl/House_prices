@@ -12,10 +12,6 @@ import requests
 
 from environment import db, print_log
 
-# SID = "renzhi"
-# USERNAME = "15014125325"
-# PASSWORD = "Aa123456789"
-# password = "3d558122fcac9ea5fdc9ee8eccf8f433"
 SID = "renzhi"
 USERNAME = "admin"
 PASSWORD = "Qwe12345678"
