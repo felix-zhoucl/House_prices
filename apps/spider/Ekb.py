@@ -22,9 +22,6 @@ def get_session():
     """获取登录session"""
     login_url = "https://erp.ekbyun.com/index.php/home/login/access.html"
     session_ = requests.Session()
-    # payload = {
-    #     'data': '{"sid":"renzhi","username":"15014125325","password":"3d558122fcac9ea5fdc9ee8eccf8f433"}'
-    # }
     payload = {
         'data': '{"sid":"renzhi","username":"admin","password":"89a4b59d1f657c9da72d94f797a55edf"}'
     }
