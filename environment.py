@@ -15,13 +15,18 @@ LOG_PATH = './log/'
 LOG_LEVEL = logging.DEBUG
 
 
-def get_config(key):
+# LOG_LEVEL = logging.INFO
+
+
+def get_config(key, path=None):
     """
     读取配置文件信息
+    :param path:
     :param key:
     :return:
     """
-    path = "config.json"
+    if not path:
+        path = "config.json"
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -52,9 +57,10 @@ def db():
     return pool.connection()
 
 
-def print_log(logFilename):
+def print_log(logFilename, log_level=None):
     """
     记录日志文件并输出到控制台
+    :param log_level: 日志级别
     :param logFilename: 日志文件名称
     :return:
     """
@@ -71,7 +77,10 @@ def print_log(logFilename):
         filemode='a+')  # 文件读写模式 a+为追加写
     """输出到控制台的句柄"""
     console = logging.StreamHandler()
-    console.setLevel(LOG_LEVEL)  # 定义输出到文件的log级别，大于此级别的都被输出
+    if log_level:
+        console.setLevel(log_level)
+    else:
+        console.setLevel(LOG_LEVEL)  # 定义输出到文件的log级别，大于此级别的都被输出
     formatter = logging.Formatter('%(asctime)s  %(filename)s : %(levelname)s  %(message)s')  # 定义输出log的格式
     console.setFormatter(formatter)
     logging.getLogger().addHandler(console)
