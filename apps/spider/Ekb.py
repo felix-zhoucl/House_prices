@@ -87,10 +87,10 @@ def download_pic(data_id):
     """
     import wget
     # 验证页面
-    # time_struct = time.time() * 1000
-    # url = "https://erp.ekbyun.com/index.php/trade/trade_common/showverifyimgcode.html?_={}".format(time_struct)
-    # path = "./1.html"
-    # wget.download(url, path)
+    time_struct = time.time() * 1000
+    url = "https://erp.ekbyun.com/index.php/trade/trade_common/showverifyimgcode.html?_={}".format(time_struct)
+    path = "./1.html"
+    wget.download(url, path)
     # 验证码
     url = "https://erp.ekbyun.com/index.php/home/login/getverifycode.html"
     path = "./verify_code/{}.png".format(data_id)
@@ -120,14 +120,14 @@ def get_data(session_, p_id):
     else:
         print(ret)
         # return {}
-        # check_verify_code(data_id=p_id, session_=session)
+        check_verify_code(data_id=p_id, session_=session)
         return {}
 
 
 if __name__ == '__main__':
     log_level = logging.WARNING
     print_log("spider.log", log_level)
-    page_index = 13
+    page_index = 15
     print("fetch_begin")
     session = get_session()
     print("get_session")
