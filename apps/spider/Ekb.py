@@ -120,14 +120,14 @@ def get_data(session_, p_id):
     else:
         print(ret)
         # return {}
-        check_verify_code(data_id=p_id, session_=session)
+        # check_verify_code(data_id=p_id, session_=session)
         return {}
 
 
 if __name__ == '__main__':
     log_level = logging.WARNING
     print_log("spider.log", log_level)
-    page_index = 15
+    page_index = 19
     print("fetch_begin")
     session = get_session()
     print("get_session")
