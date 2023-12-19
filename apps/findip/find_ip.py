@@ -56,6 +56,6 @@ def get_address_by_location(location: dict):
 
 
 if __name__ == '__main__':
-    ip_addr = "60.208.111.211"
+    ip_addr = "124.127.24.162"
     address = get_address_by_ip(ip_addr)
     print(address)

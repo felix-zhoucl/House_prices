@@ -28,9 +28,11 @@ def get_config(key, path=None):
     if not path:
         path = "config.json"
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            ret = data.get(key)
+        with open(path, "r", encoding="GBK") as f:
+            ret = json.load(f)
+            key_list = key.split(".")
+            for key_ in key_list:
+                ret = ret.get(key_)
             return ret
     except:
         logging.error(traceback.format_exc())
